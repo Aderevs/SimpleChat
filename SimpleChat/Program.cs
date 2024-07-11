@@ -1,4 +1,5 @@
 using SimpleChat.DbLogic;
+using SimpleChat.DbLogic.Repositories;
 
 namespace SimpleChat
 {
@@ -13,6 +14,10 @@ namespace SimpleChat
                 var connectionString = builder.Configuration["ConnectionString"];
                 return new ChatDbContext(connectionString);
             });
+
+            builder.Services.AddScoped<UsersRepository>();
+            builder.Services.AddScoped<ChatsRepository>();
+            builder.Services.AddScoped<MessagesRepository>();
 
             var app = builder.Build();
 
