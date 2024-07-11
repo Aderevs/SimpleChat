@@ -5,9 +5,15 @@ namespace SimpleChat
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddSignalR();
             var app = builder.Build();
 
-            app.MapGet("/", () => "Hello World!");
+
+            //app.MapHub<ChatHub>("/chathub");
+            app.UseRouting();
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}");
 
             app.Run();
         }
