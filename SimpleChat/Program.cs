@@ -1,3 +1,5 @@
+using SimpleChat.DbLogic;
+
 namespace SimpleChat
 {
     public class Program
@@ -6,8 +8,13 @@ namespace SimpleChat
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddSignalR();
-            var app = builder.Build();
+            builder.Services.AddScoped(provider =>
+            {
+                var connectionString = builder.Configuration["ConnectionString"];
+                return new ChatDbContext(connectionString);
+            });
 
+            var app = builder.Build();
 
             //app.MapHub<ChatHub>("/chathub");
             app.UseRouting();
