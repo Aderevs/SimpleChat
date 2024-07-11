@@ -18,7 +18,10 @@ namespace SimpleChat
             builder.Services.AddScoped<UsersRepository>();
             builder.Services.AddScoped<ChatsRepository>();
             builder.Services.AddScoped<MessagesRepository>();
-
+            builder.Services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<ModelProfile>();
+            });
             var app = builder.Build();
 
             //app.MapHub<ChatHub>("/chathub");
