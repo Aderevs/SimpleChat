@@ -1,0 +1,21 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SimpleChat.DbLogic
+{
+    public class Message
+    {
+        [Key]
+        public int MessageId { get; set; }
+
+        [Required]
+        public string? Content { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
+        public User? User { get; set; }
+
+        [Required]
+        public int ChatId { get; set; }
+        public Chat? Chat { get; set; }
+    }
+}
