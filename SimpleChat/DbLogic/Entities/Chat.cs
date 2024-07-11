@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SimpleChat.DbLogic
+namespace SimpleChat.DbLogic.Entities
 {
     public class Chat
     {
@@ -12,7 +12,7 @@ namespace SimpleChat.DbLogic
         public string? Name { get; set; }
 
         [Required]
-        public int HostUserId {  get; set; }
+        public int HostUserId { get; set; }
         public User? HostUser { get; set; }
 
         public List<User>? UsersInvited { get; set; }

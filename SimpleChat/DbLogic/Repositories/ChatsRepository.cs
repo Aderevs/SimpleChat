@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SimpleChat.DbLogic.Entities;
 using System.Transactions;
 
 namespace SimpleChat.DbLogic.Repositories
@@ -37,20 +38,20 @@ namespace SimpleChat.DbLogic.Repositories
                 .FirstOrDefaultAsync(chat => chat.ChatId == id);
 #pragma warning restore CS8603 // Possible null reference return.
         }
-        public void Add(Chat chat)
+        public async Task<Chat>  AddAsync(Chat chat)
         {
             _context.Chats.Add(chat);
+            await _context.SaveChangesAsync();
+            return chat;
         }
-        public void Update(Chat chat)
+        public async Task UpdateAsync(Chat chat)
         {
             _context.Chats.Update(chat);
+            await _context.SaveChangesAsync();
         }
-        public void Delete(Chat chat)
+        public async Task DeleteAsync(Chat chat)
         {
             _context.Chats.Remove(chat);
-        }
-        public async Task SaveChangesAsync()
-        {
             await _context.SaveChangesAsync();
         }
 

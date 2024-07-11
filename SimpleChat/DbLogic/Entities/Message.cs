@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SimpleChat.DbLogic
+namespace SimpleChat.DbLogic.Entities
 {
     public class Message
     {

@@ -1,4 +1,7 @@
-﻿namespace SimpleChat.DbLogic.Repositories
+﻿using Microsoft.EntityFrameworkCore;
+using SimpleChat.DbLogic.Entities;
+
+namespace SimpleChat.DbLogic.Repositories
 {
     public class MessagesRepository
     {
@@ -9,20 +12,28 @@
             _context = context;
         }
 
-        public void Add(Message message)
+        public async Task<Message> AddAsync(Message message)
         {
             _context.Messages.Add(message);
+            await _context.SaveChangesAsync();
+            return message;
         }
-        public void Update(Message message)
+        public async Task UpdateAsync(Message message)
         {
             _context.Messages.Update(message);
+            await _context.SaveChangesAsync();
         }
-        public void Delete(Message message)
+        public async Task DeleteAsync(Message message)
         {
             _context.Messages.Remove(message);
+            await _context.SaveChangesAsync();
         }
-        public async Task SaveChangesAsync()
+        public async Task DeleteAllFromChatByIdAsync(int chatId)
         {
+            var messagesToDelete = await _context.Messages
+                .Where(message => message.ChatId == chatId)
+                .ToListAsync();
+            _context.Messages.RemoveRange(messagesToDelete);
             await _context.SaveChangesAsync();
         }
 

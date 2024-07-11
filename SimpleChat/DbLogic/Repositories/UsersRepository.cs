@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SimpleChat.DbLogic;
+using SimpleChat.DbLogic.Entities;
 namespace SimpleChat.DbLogic.Repositories
 {
     public class UsersRepository
@@ -20,31 +20,37 @@ namespace SimpleChat.DbLogic.Repositories
             return await _context.Users.FindAsync(id);
 #pragma warning restore CS8603 // Possible null reference return.
         }
-        public void Add(User user)
+        public async Task<User> GetByIdIncludeChatsConnectedToOrDefaultAsync(int id)
+        {
+#pragma warning disable CS8603 // Possible null reference return.
+            return await _context.Users
+                .Include(user => user.ChatsConnectedTo)
+                .FirstOrDefaultAsync(user => user.UserId == id);
+#pragma warning restore CS8603 // Possible null reference return.
+        }
+        public async Task AddAsync(User user)
         {
             _context.Users.Add(user);
+            await _context.SaveChangesAsync();
         }
         public async Task DisconnectAllFromChatBeforeDeleteByChatIdAsync(int chatId)
         {
 
-            var users = await _context.Users
+            var usersFromChat = await _context.Users
                 .Include(user => user.ChatsConnectedTo)
                 .Where(user => user.ChatsConnectedTo.Any(chat => chat.ChatId == chatId))
                 .ToListAsync();
-            if(users == null)
+            if (usersFromChat == null || usersFromChat.Count <= 0)
             {
                 return;
             }
-            var chatToDelete = users[0].ChatsConnectedTo
+            var chatToDelete = usersFromChat[0].ChatsConnectedTo
                 .First(chat => chat.ChatId == chatId);
-            foreach (var user in users)
+            foreach (var user in usersFromChat)
             {
                 user.ChatsConnectedTo.Remove(chatToDelete);
                 _context.Users.Update(user);
             }
-        }
-        public async Task SaveChangesAsync()
-        {
             await _context.SaveChangesAsync();
         }
     }
