@@ -34,6 +34,11 @@ namespace SimpleChat.DbLogic.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
+        public async Task DeleteAsync(User user)
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+        }
         public async Task DisconnectAllFromChatBeforeDeleteByChatIdAsync(int chatId)
         {
 
