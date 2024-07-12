@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using SimpleChat.DbLogic;
 using SimpleChat.DbLogic.Entities;
 using SimpleChat.DbLogic.Repositories;
 using SimpleChat.DTOs;
-using System.Runtime.InteropServices;
-using System.Transactions;
 
 namespace SimpleChat.Services
 {
@@ -42,18 +37,17 @@ namespace SimpleChat.Services
             var userDb = await _usersRepository.GetByIdIncludeChatsConnectedToOrDefaultAsync(userId);
             if (userDb == null)
             {
-                throw new ArgumentException("No user with such id was found");
+                throw new ArgumentException("User with this ID was not found");
             }
             return _mapper.Map<List<ChatDTO>>(userDb.ChatsConnectedTo);
         }
         public async Task<ChatDTO> CreateChat(ChatDTO chat)
         {
-
             var chatDb = _mapper.Map<Chat>(chat);
             var userDb = await _usersRepository.GetByIdOrDefaultAsync(chatDb.HostUserId);
             if (userDb == null)
             {
-                throw new ArgumentException($"No user with id such as {nameof(chatDb.HostUserId)} from chat from argument was found");
+                throw new ArgumentException($"Not found user with {nameof(chatDb.HostUserId)} from chat from argument");
             }
             chatDb.UsersInvited.Add(userDb);
             var createdChat = await _chatsRepository.AddAsync(chatDb);
@@ -64,7 +58,7 @@ namespace SimpleChat.Services
             var chatDb = await _chatsRepository.GetByIdOrDefaultAsync(chatId);
             if (chatDb == null)
             {
-                throw new ArgumentException("No chat with such id was found");
+                throw new ArgumentException("Chat with this ID was not found");
             }
             if (chatDb.HostUserId != userId)
             {
@@ -95,12 +89,12 @@ namespace SimpleChat.Services
             var chatDb = await _chatsRepository.GetByIdIncludeUsersInvolvedOrDefaultAsync(chatId);
             if (chatDb == null)
             {
-                throw new ArgumentException("No chat with such id was found");
+                throw new ArgumentException("Chat with this ID was not found");
             }
             var userDb = await _usersRepository.GetByIdOrDefaultAsync(chatId);
             if (userDb == null)
             {
-                throw new ArgumentException("No user with such id was found");
+                throw new ArgumentException("User with this ID was not found");
             }
             if (chatDb.UsersInvited.Any(user => user.UserId == userId))
             {
@@ -109,5 +103,6 @@ namespace SimpleChat.Services
             chatDb.UsersInvited.Add(userDb);
             await _chatsRepository.UpdateAsync(chatDb);
         }
+
     }
 }

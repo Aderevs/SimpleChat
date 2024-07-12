@@ -44,16 +44,20 @@ namespace SimpleChat.DbLogic.Repositories
             await _context.SaveChangesAsync();
             return chat;
         }
-        public async Task UpdateAsync(Chat chat)
+        public async Task<Chat> UpdateAsync(Chat chat)
         {
             _context.Chats.Update(chat);
             await _context.SaveChangesAsync();
+            return chat;
         }
         public async Task DeleteAsync(Chat chat)
         {
             _context.Chats.Remove(chat);
             await _context.SaveChangesAsync();
         }
-
+        public async Task<bool> CheckIfChatWithSuchIdExistsAsync(int id)
+        {
+            return await _context.Chats.AnyAsync(chat => chat.ChatId == id);
+        }
     }
 }
