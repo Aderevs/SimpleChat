@@ -118,8 +118,8 @@ namespace SimpleChat.Services
             {
                 throw new InvalidOperationException("Such user isn't a member of this chat");
             }
-            var userToDisconnest = chatDb.UsersInvited.First(user => user.UserId == userId);
-            chatDb.UsersInvited.Remove(userToDisconnest);
+            var userToDisconnect = chatDb.UsersInvited.First(user => user.UserId == userId);
+            chatDb.UsersInvited.Remove(userToDisconnect);
         }
     }
 }
