@@ -15,9 +15,7 @@ namespace SimpleChat
             CreateMap<UserDTO, User>();
             CreateMap<ChatDTO, Chat>()
                 .ForMember(dest => dest.HostUserId, opt => opt.MapFrom(src => src.HostUser.UserId));
-            CreateMap<MessageDTO, Message>()
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.UserId))
-                .ForMember(dest => dest.ChatId, opt => opt.MapFrom(src => src.Chat.ChatId));
+            CreateMap<MessageDTO, Message>();
         }
     }
 }

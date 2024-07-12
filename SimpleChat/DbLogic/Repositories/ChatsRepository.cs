@@ -16,6 +16,14 @@ namespace SimpleChat.DbLogic.Repositories
         {
             return await _context.Chats.ToListAsync();
         }
+        public async Task<IEnumerable<Chat>> GetAllBySubstringNameIncludeUsersAndMessagesAsync(string substring)
+        {
+            return await _context.Chats
+                .Include(chat => chat.AllMessages)
+                .Include(chat => chat.UsersInvited)
+                .Where(chat => chat.Name.Contains(substring))
+                .ToListAsync();
+        }
         public async Task<Chat> GetByIdOrDefaultAsync(int id)
         {
 #pragma warning disable CS8603 // Possible null reference return.
@@ -38,7 +46,7 @@ namespace SimpleChat.DbLogic.Repositories
                 .FirstOrDefaultAsync(chat => chat.ChatId == id);
 #pragma warning restore CS8603 // Possible null reference return.
         }
-        public async Task<Chat>  AddAsync(Chat chat)
+        public async Task<Chat> AddAsync(Chat chat)
         {
             _context.Chats.Add(chat);
             await _context.SaveChangesAsync();

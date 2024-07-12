@@ -84,8 +84,7 @@ namespace SimpleChat.Services
         }
         public async Task<IEnumerable<ChatDTO>> SearchForChats(string query)
         {
-            var chatsDb = await _chatsRepository.GetAllAsync();
-            chatsDb = chatsDb.Where(chat => chat.Name.Contains(query));
+            var chatsDb = await _chatsRepository.GetAllBySubstringNameIncludeUsersAndMessagesAsync(query);
             return _mapper.Map<List<ChatDTO>>(chatsDb);
         }
         public async Task ConnectUserToChat(int userId, int chatId)
@@ -95,7 +94,7 @@ namespace SimpleChat.Services
             {
                 throw new ArgumentException("Chat with this ID was not found");
             }
-            var userDb = await _usersRepository.GetByIdOrDefaultAsync(chatId);
+            var userDb = await _usersRepository.GetByIdOrDefaultAsync(userId);
             if (userDb == null)
             {
                 throw new ArgumentException("User with this ID was not found");
@@ -124,6 +123,7 @@ namespace SimpleChat.Services
             }
             var userToDisconnect = chatDb.UsersInvited.First(user => user.UserId == userId);
             chatDb.UsersInvited.Remove(userToDisconnect);
+            await _chatsRepository.UpdateAsync(chatDb);
         }
     }
 }

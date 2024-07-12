@@ -26,11 +26,11 @@ namespace SimpleChat.Services
 
         public async Task<MessageDTO> CreateMessage(MessageDTO messageDTO)
         {
-            if (!await _chatsRepository.CheckIfChatWithSuchIdExistsAsync(messageDTO.Chat.ChatId))
+            if (!await _chatsRepository.CheckIfChatWithSuchIdExistsAsync(messageDTO.ChatId))
             {
                 throw new ArgumentException("No chat was found with an identifier matching this message field Chat.ChatId");
             }
-            if (!await _usersRepository.CheckIfUserWithSuchIdExistsAsync(messageDTO.User.UserId))
+            if (!await _usersRepository.CheckIfUserWithSuchIdExistsAsync(messageDTO.UserId))
             {
                 throw new ArgumentException("No user was found with an identifier matching this message field User.UserId");
             }

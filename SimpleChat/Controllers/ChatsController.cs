@@ -66,7 +66,7 @@ namespace SimpleChat.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteChat(int id, [FromBody] RequestIdsModel userIdModel)
+        public async Task<IActionResult> DeleteChat(int id, [FromBody] RequestUserId userIdModel)
         {
             int userId = userIdModel.UserId;
             if (id <= 0)
@@ -81,36 +81,36 @@ namespace SimpleChat.Controllers
             return Ok("Chat successfully deleted");
         }
 
-        [HttpPost("connect")]
-        public async Task<IActionResult> ConnectUser([FromBody] RequestIdsModel idsModel)
+        [HttpPost("{id}/connect")]
+        public async Task<IActionResult> ConnectUser(int id, [FromBody] RequestUserId requestUserId)
         {
-            if (idsModel.UserId <= 0)
+            if (requestUserId.UserId <= 0)
             {
-                return BadRequest($"{nameof(idsModel.UserId)} field must be greater than 0");
+                return BadRequest($"{nameof(requestUserId.UserId)} field must be greater than 0");
             }
-            if (idsModel.ChatId <= 0)
+            if (id <= 0)
             {
-                return BadRequest($"{nameof(idsModel.ChatId)} field must be greater than 0");
+                return BadRequest($"{nameof(id)} must be greater than 0");
             }
-            var userId = idsModel.UserId;
-            var chatId = idsModel.ChatId;
+            var userId = requestUserId.UserId;
+            var chatId = id;
             await _chatService.ConnectUserToChat(userId, chatId);
             return Ok($"User id:{userId} successfully connected to chat id: {chatId}");
         }
 
-        [HttpPost("disconnect")]
-        public async Task<IActionResult> DisconnectUser([FromBody] RequestIdsModel idsModel)
+        [HttpPost("{id}/disconnect")]
+        public async Task<IActionResult> DisconnectUser(int id, [FromBody] RequestUserId requestUserId)
         {
-            if (idsModel.UserId <= 0)
+            if (requestUserId.UserId <= 0)
             {
-                return BadRequest($"{nameof(idsModel.UserId)} field must be greater than 0");
+                return BadRequest($"{nameof(requestUserId.UserId)} field must be greater than 0");
             }
-            if (idsModel.ChatId <= 0)
+            if (id <= 0)
             {
-                return BadRequest($"{nameof(idsModel.ChatId)} field must be greater than 0");
+                return BadRequest($"{nameof(id)} must be greater than 0");
             }
-            var userId = idsModel.UserId;
-            var chatId = idsModel.ChatId;
+            var userId = requestUserId.UserId;
+            var chatId = id;
             await _chatService.DisconnectUserFromChat(userId, chatId);
             return Ok($"User id:{userId} successfully disconnected form the chat id:{chatId}");
         }
