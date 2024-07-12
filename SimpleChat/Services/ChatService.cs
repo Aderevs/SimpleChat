@@ -78,7 +78,7 @@ namespace SimpleChat.Services
                 throw;
             }
         }
-        public async Task<IEnumerable<ChatDTO>> SearchForChat(string query)
+        public async Task<IEnumerable<ChatDTO>> SearchForChats(string query)
         {
             var chatsDb = await _chatsRepository.GetAllAsync();
             chatsDb = chatsDb.Where(chat => chat.Name.Contains(query));
@@ -103,6 +103,23 @@ namespace SimpleChat.Services
             chatDb.UsersInvited.Add(userDb);
             await _chatsRepository.UpdateAsync(chatDb);
         }
-
+        public async Task DisconnectUserFromChat(int userId, int chatId)
+        {
+            var chatDb = await _chatsRepository.GetByIdIncludeUsersInvolvedOrDefaultAsync(chatId);
+            if (chatDb == null)
+            {
+                throw new ArgumentException("Chat with this ID was not found");
+            }
+            if (!await _usersRepository.CheckIfUserWithSuchIdExistsAsync(userId))
+            {
+                throw new ArgumentException("User with this ID was not found");
+            }
+            if (!chatDb.UsersInvited.Any(user => user.UserId == userId))
+            {
+                throw new InvalidOperationException("Such user isn't a member of this chat");
+            }
+            var userToDisconnest = chatDb.UsersInvited.First(user => user.UserId == userId);
+            chatDb.UsersInvited.Remove(userToDisconnest);
+        }
     }
 }
