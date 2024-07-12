@@ -1,4 +1,4 @@
-﻿namespace SimpleChat
+﻿namespace SimpleChat.RequestModels
 {
     public class RequestUserId
     {

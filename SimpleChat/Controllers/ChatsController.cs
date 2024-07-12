@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SimpleChat.DbLogic.Entities;
 using SimpleChat.DTOs;
+using SimpleChat.RequestModels;
 using SimpleChat.Services;
 
 namespace SimpleChat.Controllers
