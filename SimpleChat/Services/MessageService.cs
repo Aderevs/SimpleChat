@@ -63,7 +63,7 @@ namespace SimpleChat.Services
             {
                 throw new UnauthorizedAccessException("Only author of the message can edit it");
             }
-            messageDb.Text = newText;
+            messageDb.Content = newText;
             var updatedMessage = await _messagesRepository.UpdateAsync(messageDb);
             return _mapper.Map<MessageDTO>(updatedMessage);
         }

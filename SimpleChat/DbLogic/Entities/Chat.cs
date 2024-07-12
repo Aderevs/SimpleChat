@@ -15,7 +15,7 @@ namespace SimpleChat.DbLogic.Entities
         public int HostUserId { get; set; }
         public User? HostUser { get; set; }
 
-        public List<User>? UsersInvited { get; set; }
         public List<Message>? AllMessages { get; set; }
+        public List<User>? UsersInvited { get; set; }
     }
 }

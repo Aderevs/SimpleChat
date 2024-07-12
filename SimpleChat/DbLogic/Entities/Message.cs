@@ -8,7 +8,7 @@ namespace SimpleChat.DbLogic.Entities
         public int MessageId { get; set; }
 
         [Required]
-        public string? Text { get; set; }
+        public string? Content { get; set; }
 
         [Required]
         public int UserId { get; set; }

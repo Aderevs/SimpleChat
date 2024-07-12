@@ -30,7 +30,8 @@ namespace SimpleChat.DbLogic
             modelBuilder.Entity<Chat>()
                 .HasMany(chat => chat.AllMessages)
                 .WithOne(message => message.Chat)
-                .HasForeignKey(message => message.ChatId);
+                .HasForeignKey(message => message.ChatId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Message>()
                 .HasOne(message => message.User)

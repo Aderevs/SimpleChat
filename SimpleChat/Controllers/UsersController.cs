@@ -19,10 +19,6 @@ namespace SimpleChat.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserDTO user)
         {
-            if (user == null)
-            {
-                return BadRequest("There is no data to create new user");
-            }
             if (user.UserId <= 0)
             {
                 return BadRequest($"{nameof(user.UserId)} field is required and must be greater than 0");
@@ -32,7 +28,7 @@ namespace SimpleChat.Controllers
                 return BadRequest($"{nameof(user.NickName)} field is required");
             }
             var createdUser = await _userService.CreateUser(user);
-            return CreatedAtAction(nameof(CreateUser), new { id = createdUser.UserId }, createdUser);
+            return CreatedAtAction(nameof(CreateUser), createdUser);
         }
 
         [HttpDelete("{id}")]

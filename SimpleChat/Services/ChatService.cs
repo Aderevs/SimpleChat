@@ -43,13 +43,18 @@ namespace SimpleChat.Services
         }
         public async Task<ChatDTO> CreateChat(ChatDTO chat)
         {
+            if(await _chatsRepository.CheckIfChatWithSuchIdExistsAsync(chat.ChatId))
+            {
+                throw new ArgumentException("Chat with such is already exists");
+            }
             var chatDb = _mapper.Map<Chat>(chat);
             var userDb = await _usersRepository.GetByIdOrDefaultAsync(chatDb.HostUserId);
             if (userDb == null)
             {
                 throw new ArgumentException($"Not found user with {nameof(chatDb.HostUserId)} from chat from argument");
             }
-            chatDb.UsersInvited.Add(userDb);
+            chatDb.HostUser = userDb;
+            chatDb.UsersInvited = [userDb];
             var createdChat = await _chatsRepository.AddAsync(chatDb);
             return _mapper.Map<ChatDTO>(createdChat);
         }
@@ -68,7 +73,6 @@ namespace SimpleChat.Services
             try
             {
                 await _usersRepository.DisconnectAllFromChatBeforeDeleteByChatIdAsync(chatId);
-                await _messagesRepository.DeleteAllFromChatByIdAsync(chatId);
                 await _chatsRepository.DeleteAsync(chatDb);
                 await transaction.CommitAsync();
             }
