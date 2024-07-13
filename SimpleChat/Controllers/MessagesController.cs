@@ -14,9 +14,9 @@ namespace SimpleChat.Controllers
     [ApiController]
     public class MessagesController : ControllerBase
     {
-        private readonly MessageService _messageService;
+        private readonly IMessageService _messageService;
         private readonly IHubContext<ChatHub> _hubContext;
-        public MessagesController(MessageService messageService, IHubContext<ChatHub> hubContext)
+        public MessagesController(IMessageService messageService, IHubContext<ChatHub> hubContext)
         {
             _messageService = messageService;
             _hubContext = hubContext;

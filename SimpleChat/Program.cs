@@ -8,14 +8,14 @@ namespace SimpleChat
 {
     public class Program
     {
-        /*public static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllers();
             builder.Services.AddSignalR();
             builder.Services.AddScoped(provider =>
             {
-                var connectionString = builder.Configuration["ConnectionString"];
+                var connectionString = builder.Configuration["ConnectionString"];//you have to write your connection string into the application.json
                 return new ChatDbContext(connectionString);
             });
 
@@ -23,9 +23,9 @@ namespace SimpleChat
             builder.Services.AddScoped<IChatsRepository, ChatsRepository>();
             builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
 
-            builder.Services.AddScoped<UserService>();
-            builder.Services.AddScoped<ChatService>();
-            builder.Services.AddScoped<MessageService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IChatService, ChatService>();
+            builder.Services.AddScoped<IMessageService, MessageService>();
 
             builder.Services.AddCors(opt =>
             {
@@ -53,6 +53,6 @@ namespace SimpleChat
 
             app.MapControllers();
             app.Run();
-        }*/
+        }
     }
 }

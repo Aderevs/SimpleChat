@@ -6,7 +6,7 @@ using SimpleChat.DTOs;
 
 namespace SimpleChat.Services
 {
-    public class ChatService
+    public class ChatService : IChatService
     {
         private readonly IMapper _mapper;
         private readonly IChatsRepository _chatsRepository;
@@ -40,7 +40,7 @@ namespace SimpleChat.Services
         }
         public async Task<ChatDTO> CreateChat(ChatDTO chat)
         {
-            if(await _chatsRepository.CheckIfChatWithSuchIdExistsAsync(chat.ChatId))
+            if (await _chatsRepository.CheckIfChatWithSuchIdExistsAsync(chat.ChatId))
             {
                 throw new ArgumentException("Chat with such is already exists");
             }

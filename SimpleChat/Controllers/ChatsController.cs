@@ -11,9 +11,9 @@ namespace SimpleChat.Controllers
     [ApiController]
     public class ChatsController : ControllerBase
     {
-        private readonly ChatService _chatService;
+        private readonly IChatService _chatService;
 
-        public ChatsController(ChatService chatService)
+        public ChatsController(IChatService chatService)
         {
             _chatService = chatService;
         }

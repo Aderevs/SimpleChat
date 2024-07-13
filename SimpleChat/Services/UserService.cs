@@ -5,7 +5,7 @@ using SimpleChat.DTOs;
 
 namespace SimpleChat.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly IMapper _mapper;
         private readonly IUsersRepository _usersRepository;
@@ -28,7 +28,7 @@ namespace SimpleChat.Services
         public async Task DeleteUser(int userId)
         {
             var userDb = await _usersRepository.GetByIdOrDefaultAsync(userId);
-            if(userDb == null)
+            if (userDb == null)
             {
                 throw new ArgumentException("User with such ID was not found");
             }

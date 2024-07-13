@@ -18,7 +18,7 @@ namespace YourNamespace.Tests
         private ChatDbContext _dbContext;
         private DbContextOptions<ChatDbContext> _dbContextOptions;
         private Mock<IMapper> _mapperMock;
-        private ChatService _chatService;
+        private IChatService _chatService;
 
         [SetUp]
         public void SetUp()

@@ -5,7 +5,7 @@ using SimpleChat.DTOs;
 
 namespace SimpleChat.Services
 {
-    public class MessageService
+    public class MessageService : IMessageService
     {
         private readonly IMapper _mapper;
         private readonly IMessagesRepository _messagesRepository;

@@ -15,7 +15,7 @@ namespace YourNamespace.Tests
         private IMessagesRepository _messagesRepository;
         private IChatsRepository _chatsRepository;
         private IUsersRepository _usersRepository;
-        private MessageService _messageService;
+        private IMessageService _messageService;
 
         [SetUp]
         public async Task Setup()
