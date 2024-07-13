@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using SimpleChat.DbLogic.Entities;
 using SimpleChat.DTOs;
+using SimpleChat.Hubs;
 using SimpleChat.RequestModels;
 using SimpleChat.Services;
 using System;
@@ -13,10 +15,11 @@ namespace SimpleChat.Controllers
     public class MessagesController : ControllerBase
     {
         private readonly MessageService _messageService;
-
-        public MessagesController(MessageService messageService)
+        private readonly IHubContext<ChatHub> _hubContext;
+        public MessagesController(MessageService messageService, IHubContext<ChatHub> hubContext)
         {
             _messageService = messageService;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -51,6 +54,8 @@ namespace SimpleChat.Controllers
                 return BadRequest($"field {nameof(message.ChatId)} is required");
             }
             var createdMessage = await _messageService.CreateMessage(message);
+
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", message.ChatId, message.UserId, message.Content);
             return CreatedAtAction(nameof(WriteMessage), createdMessage);
         }
 
@@ -73,6 +78,7 @@ namespace SimpleChat.Controllers
             var newText = request.NewText;
             var userId = request.UserId;    
             var updatedMessage = await _messageService.ChangeMessageText(messageId, newText, userId);
+            await _hubContext.Clients.All.SendAsync("UpdateMessage", messageId, newText);
             return Ok(updatedMessage);
         }
 
@@ -90,6 +96,7 @@ namespace SimpleChat.Controllers
             var messageId = id;
             var userId = requestUserId.UserId;
             await _messageService.DeleteMessage(messageId, userId);
+            await _hubContext.Clients.All.SendAsync("DeleteMessage", messageId);
             return Ok("Message successfully deleted");
         }
     }

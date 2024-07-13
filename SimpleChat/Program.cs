@@ -2,6 +2,7 @@
 using SimpleChat.DbLogic.Repositories;
 using SimpleChat.Controllers;
 using SimpleChat.Services;
+using SimpleChat.Hubs;
 
 namespace SimpleChat
 {
@@ -26,27 +27,30 @@ namespace SimpleChat
             builder.Services.AddScoped<ChatService>();
             builder.Services.AddScoped<MessageService>();
 
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddDefaultPolicy(pol =>
+                {
+                    pol.WithOrigins("http://localhost:3000")
+                        .AllowAnyMethod() 
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
+            });
             builder.Services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<ModelProfile>();
             });
 
-                        builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddEndpointsApiExplorer();
 
-                        builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen();
             var app = builder.Build();
 
-            //app.MapHub<ChatHub>("/chathub");
+            app.MapHub<ChatHub>("/chathub");
             app.UseRouting();
-            /*app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers(); 
-            });*/
-            /* app.MapControllerRoute(
-                 name: "default",
-                 pattern: "{controller=Home}/{action=Index}");
+            app.UseCors();
 
-                         app.MapChatDTOEndpoints();*/
             app.MapControllers();
             app.Run();
         }
