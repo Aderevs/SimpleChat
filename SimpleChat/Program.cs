@@ -8,7 +8,7 @@ namespace SimpleChat
 {
     public class Program
     {
-        public static void Main(string[] args)
+        /*public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllers();
@@ -19,9 +19,9 @@ namespace SimpleChat
                 return new ChatDbContext(connectionString);
             });
 
-            builder.Services.AddScoped<UsersRepository>();
-            builder.Services.AddScoped<ChatsRepository>();
-            builder.Services.AddScoped<MessagesRepository>();
+            builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+            builder.Services.AddScoped<IChatsRepository, ChatsRepository>();
+            builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
 
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<ChatService>();
@@ -32,7 +32,7 @@ namespace SimpleChat
                 opt.AddDefaultPolicy(pol =>
                 {
                     pol.WithOrigins("http://localhost:3000")
-                        .AllowAnyMethod() 
+                        .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials();
                 });
@@ -53,6 +53,6 @@ namespace SimpleChat
 
             app.MapControllers();
             app.Run();
-        }
+        }*/
     }
 }

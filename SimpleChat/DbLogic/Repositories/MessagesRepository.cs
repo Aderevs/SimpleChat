@@ -3,7 +3,7 @@ using SimpleChat.DbLogic.Entities;
 
 namespace SimpleChat.DbLogic.Repositories
 {
-    public class MessagesRepository
+    public class MessagesRepository : IMessagesRepository
     {
         private readonly ChatDbContext _context;
 

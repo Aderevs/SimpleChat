@@ -4,7 +4,7 @@ using System.Transactions;
 
 namespace SimpleChat.DbLogic.Repositories
 {
-    public class ChatsRepository
+    public class ChatsRepository : IChatsRepository
     {
         private readonly ChatDbContext _context;
 

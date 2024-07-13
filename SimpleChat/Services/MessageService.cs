@@ -8,15 +8,15 @@ namespace SimpleChat.Services
     public class MessageService
     {
         private readonly IMapper _mapper;
-        private readonly MessagesRepository _messagesRepository;
-        private readonly ChatsRepository _chatsRepository;
-        private readonly UsersRepository _usersRepository;
+        private readonly IMessagesRepository _messagesRepository;
+        private readonly IChatsRepository _chatsRepository;
+        private readonly IUsersRepository _usersRepository;
 
         public MessageService(
             IMapper mapper,
-            MessagesRepository messagesRepository,
-            ChatsRepository chatsRepository,
-            UsersRepository usersRepository)
+            IMessagesRepository messagesRepository,
+            IChatsRepository chatsRepository,
+            IUsersRepository usersRepository)
         {
             _mapper = mapper;
             _messagesRepository = messagesRepository;

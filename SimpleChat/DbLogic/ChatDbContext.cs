@@ -15,6 +15,9 @@ namespace SimpleChat.DbLogic
         {
             _connectionString = connectionString;
         }
+        public ChatDbContext(DbContextOptions<ChatDbContext> options) : base(options)
+        {
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()

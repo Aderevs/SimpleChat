@@ -9,28 +9,25 @@ namespace SimpleChat.Services
     public class ChatService
     {
         private readonly IMapper _mapper;
-        private readonly ChatsRepository _chatsRepository;
-        private readonly UsersRepository _usersRepository;
-        private readonly MessagesRepository _messagesRepository;
+        private readonly IChatsRepository _chatsRepository;
+        private readonly IUsersRepository _usersRepository;
         private readonly ChatDbContext _dbContext;
 
         public ChatService(
             IMapper mapper,
-            ChatsRepository chatsRepository,
-            UsersRepository usersRepository,
-            MessagesRepository messagesRepository,
+            IChatsRepository chatsRepository,
+            IUsersRepository usersRepository,
             ChatDbContext dbContext)
         {
             _mapper = mapper;
             _chatsRepository = chatsRepository;
             _usersRepository = usersRepository;
-            _messagesRepository = messagesRepository;
             _dbContext = dbContext;
         }
-        public async Task<IEnumerable<Chat>> GetAllChats()
+        public async Task<IEnumerable<ChatDTO>> GetAllChats()
         {
             var chatsDb = await _chatsRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<Chat>>(chatsDb);
+            return _mapper.Map<IEnumerable<ChatDTO>>(chatsDb);
         }
         public async Task<IEnumerable<ChatDTO>> GetAllChatsOfUserById(int userId)
         {

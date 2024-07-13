@@ -8,9 +8,9 @@ namespace SimpleChat.Services
     public class UserService
     {
         private readonly IMapper _mapper;
-        private readonly UsersRepository _usersRepository;
+        private readonly IUsersRepository _usersRepository;
 
-        public UserService(IMapper mapper, UsersRepository usersRepository)
+        public UserService(IMapper mapper, IUsersRepository usersRepository)
         {
             _mapper = mapper;
             _usersRepository = usersRepository;
