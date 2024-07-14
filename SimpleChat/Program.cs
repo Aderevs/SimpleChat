@@ -3,6 +3,7 @@ using SimpleChat.DbLogic.Repositories;
 using SimpleChat.Controllers;
 using SimpleChat.Services;
 using SimpleChat.Hubs;
+using SimpleChat.Middleware;
 
 namespace SimpleChat
 {
@@ -52,6 +53,7 @@ namespace SimpleChat
             app.UseCors();
 
             app.MapControllers();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.Run();
         }
     }
